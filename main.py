@@ -9,10 +9,6 @@ argParser = argparse.ArgumentParser(description='Organizes files in a directory 
 argParser.add_argument('-d', '--dir', help='directory to organize', default='.')
 args = argParser.parse_args()
 
-if args.help:
-    print('Usage: python3 main.py -d <X:/path/to/directory/to/organize')
-    exit()
-
 # file extensions to organize
 extensions = {
     'jpg': 'images',
