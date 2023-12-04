@@ -1,7 +1,20 @@
 import os
 import glob
 import shutil
+import argparse
 
+#parses command line arguments
+argParser = argparse.ArgumentParser(description='Organizes files in a directory into folders by extension')
+argParser.add_argument('-d', '--dir', help='directory to organize', default='.')
+argParser.add_argument('-h', '--help', help='show this help')
+args = argParser.parse_args()
+
+if args.help:
+    print('Usage: python3 main.py -d <X:/path/to/directory/to/organize')
+    exit()
+
+
+#file extensions to organize
 extensions = {
     'jpg': 'images',
     'png': 'images',
@@ -40,7 +53,8 @@ extensions = {
     'log': 'logs'
 }
 
-path = r'C:\Users\prome\Downloads'
+#calls back the directory supplied earlier
+path = args.dir
 #Set verbose to 1 to show all file moves
 #Set verbose to 0 to show only basic info
 verbose = 1
