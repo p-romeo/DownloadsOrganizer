@@ -7,7 +7,6 @@ import argparse
 argParser = argparse.ArgumentParser(description='Organizes files in a directory into folders by extension',
                                     usage='%(prog)s [h] [-d DIR]')
 argParser.add_argument('-d', '--dir', help='directory to organize', default='.')
-argParser.add_argument('-h', '--help', help='show this help')
 args = argParser.parse_args()
 
 if args.help:
