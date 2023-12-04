@@ -8,6 +8,9 @@ argParser = argparse.ArgumentParser(description='Organizes files in a directory 
                                     usage='%(prog)s [h] [-d DIR]')
 argParser.add_argument('-d', '--dir', help='directory to organize', default='.')
 argParser.add_argument('-v', '--verbose', help='toggle verbose output', action='store_true')
+argParser.add_argument('--dry_run', action='store_true', help='does a dry run without actually organizing')
+
+
 args = argParser.parse_args()
 
 # file extensions to organize
@@ -57,15 +60,21 @@ path = args.dir
 for extension, folder_name in extensions.items():
     # get all the files matching the extension in the dir
     files = glob.glob(os.path.join(path, f"*.{extension}"))
-    print(f"[*] Found {len(files)} files with {extension} extension")
+    if args.verbose or args.dry_run:
+        print(f"[*] Found {len(files)} files with {extension} extension")
     if not os.path.isdir(os.path.join(path, folder_name)) and files:
-        # if the folder doesn't exist, create it
-        print(f"[+] Making {folder_name} folder")
-        os.mkdir(os.path.join(path, folder_name))
+        if args.dry_run:
+            print(f"[DRY RUN] Would create {folder_name} folder.")
+        else:
+            print(f"[+] Making {folder_name} folder")
+            os.mkdir(os.path.join(path, folder_name))
     for file in files:
         # for each file with that extension move it to the folder
         basename = os.path.basename(file)
         dst = os.path.join(path, folder_name, basename)
-        if args.verbose:
-            print(f"[*] Moving {file} to {dst}")
-        shutil.move(file, dst)
+        if args.dry_run:
+            print(f"[DRY RUN] Would move {file} to {dst}")
+        else:
+            if args.verbose:
+                print(f"[*] Moving {file} to {dst}")
+            shutil.move(file, dst)
